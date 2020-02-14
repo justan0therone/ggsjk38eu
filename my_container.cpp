@@ -3,21 +3,6 @@
 #include <iostream>
 
 template<typename T, std::size_t N>
-using value_type        = T;
-
-template<typename T, std::size_t N>
-using reference         = value_type&;
-
-template<typename T, std::size_t N>
-using const_reference   = const value_type&;
-
-template<typename T, std::size_t N>
-using size_type         = std::size_t;
-
-template<typename T, std::size_t N>
-using iterator          = value_type*;
-
-template<typename T, std::size_t N>
 My_container<T, N>::My_container() :
     _data(nullptr),
     _size(0),
@@ -28,11 +13,11 @@ My_container<T, N>::My_container() :
 template<typename T, std::size_t N>
 My_container<T, N>::~My_container()
 {
-    _deallocate()
+    _deallocate();
 }
 
 template<typename T, std::size_t N>
-My_container<T, N>::size_type size()
+typename My_container<T, N>::size_type size()
 {
     return N;
 }
@@ -44,7 +29,7 @@ constexpr bool My_container<T, N>::empty()
 }
 
 template<typename T, std::size_t N>
-reference<T, N> My_container<T, N>::at(size_type i) 
+typename My_container<T, N>::reference My_container<T, N>::at(size_type i)
 {
     if(i > _size)
     {
@@ -54,25 +39,25 @@ reference<T, N> My_container<T, N>::at(size_type i)
 }
 
 template<typename T, std::size_t N>
-reference<T, N> My_container<T, N>::operator[](size_type i)
+typename My_container<T, N>::reference My_container<T, N>::operator[](size_type i)
 {
     return _data[i];
 }
 
 template<typename T, std::size_t N>
-const_reference<T, N> My_container<T, N>::operator[](size_type i) const
+typename My_container<T, N>::const_reference My_container<T, N>::operator[](size_type i) const
 {
     return _data[i];
 }
 
 template<typename T, std::size_t N>
-iterator<T, N> My_container<T, N>::begin()
+typename My_container<T, N>::iterator My_container<T, N>::begin()
 {
     return (_size == 0 ? end() : &_data[0]);
 }
 
 template<typename T, std::size_t N>
-iterator<T, N> My_container<T, N>::end()
+typename My_container<T, N>::iterator My_container<T, N>::end()
 {
     return (_sizeBuf == 0 ? nullptr : &_data[_size]);
 }
@@ -124,9 +109,9 @@ int main()
 
     ok.push_back(1337);
 
-    for (auto it = ok.begin(); it != ok.end(); ++it)
+    for (int& it : ok)
     {
-        std::cout << *it << std::endl;
+        std::cout << it << std::endl;
     }
 
     std::cout << ok[4] << std::endl;
